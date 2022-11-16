@@ -4,6 +4,7 @@ import java.util.stream.Collectors;
 
 public class Trigrammes {
     private HashMap<String, LinkedList<String>> trigrammesPossibles = new LinkedHashMap<>();
+
     public Trigrammes(List<String> dictionnaire) {
         StringBuilder mot;
         HashMap<String, LinkedList<String>> listeMot = new HashMap<>();
@@ -17,43 +18,30 @@ public class Trigrammes {
                     listeMot.put(mot.substring(i, i + 3), new LinkedList<>());
                     listeMot.get(mot.substring(i, i + 3)).add(motDictionnaire);
                     trigrammesPossibles.put(mot.substring(i, i + 3), listeMot.get(mot.substring(i, i + 3)));
-                }
-                else {
+                } else {
                     listeMot.get(mot.substring(i, i + 3)).add(motDictionnaire);
                     trigrammesPossibles.put(mot.substring(i, i + 3), listeMot.get(mot.substring(i, i + 3)));
                 }
             }
         }
-        //System.out.println(trigrammesPossibles);
-       /* for (String motDictionnaire : dictionnaire) {
-            mot = new StringBuilder(motDictionnaire);
-            mot.insert(0, '<');
-            mot.append('>');
-            for (int i = 0; i < mot.length() - 2; i++) {
-                listeMot.get(mot.substring(i, i + 3)).add(motDictionnaire);
-                trigrammesPossibles.put(mot.substring(i, i + 3), listeMot.get(mot.substring(i, i + 3)));
-            }
-        }*/
-       // System.out.println(trigrammesPossibles);
-        //System.out.println(trigrammesPossibles.get("<ab"));
-
     }
-    public HashMap<String, String> trigrammeMot(String mot){
-        HashMap<String, String> hashTrigrammesMot = new LinkedHashMap<>();
+
+    public List<String> trigrammeMot(String mot) {
+        List<String> hashTrigrammesMot = new ArrayList<>();
         StringBuilder motBuilder;
         motBuilder = new StringBuilder(mot);
         motBuilder.insert(0, '<');
         motBuilder.append('>');
         for (int i = 0; i < motBuilder.length() - 2; i++) {
-            hashTrigrammesMot.put(motBuilder.substring(i, i + 3), "");
+            hashTrigrammesMot.add(motBuilder.substring(i, i + 3));
         }
         return hashTrigrammesMot;
     }
 
-    public LinkedList<String> listeMotTrigrammesCommun (HashMap<String, String> trigrammes){
+    public LinkedList<String> listeMotTrigrammesCommun(List<String> trigrammes) {
         LinkedList<String> motsTrigerammeCommun = new LinkedList<>();
-        for (String trig : trigrammes.keySet()) {
-            if (trigrammesPossibles.containsKey(trig)){
+        for (String trig : trigrammes) {
+            if (trigrammesPossibles.containsKey(trig)) {
                 motsTrigerammeCommun.addAll((Collection<? extends String>) trigrammesPossibles.get(trig).clone());
             }
         }
